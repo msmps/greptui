@@ -26,6 +26,7 @@ type Panel = Panels["id"];
 
 type State = {
   panel: Panel;
+  updateAvailable: boolean;
   searchTerm: string;
   scrollPosition: number;
   selectedResult?: GrepHit;
@@ -38,6 +39,7 @@ type Actions = {
   gotoPreviousPanel: () => void;
   setSelectedResult: (selectedResult: State["selectedResult"]) => void;
   setSearchTerm: (searchTerm: State["searchTerm"]) => void;
+  setUpdateAvailable: (updateAvailable: State["updateAvailable"]) => void;
 };
 
 type Store = State & {
@@ -69,6 +71,7 @@ const getNextEnabledPanel = (
 
 export const useStore = create<Store>((set) => ({
   panel: "search",
+  updateAvailable: false,
   searchTerm: "",
   scrollPosition: 0,
   selectedResult: undefined,
@@ -86,6 +89,7 @@ export const useStore = create<Store>((set) => ({
     setSelectedResult: (selectedResult) => set({ selectedResult }),
     setSearchTerm: (searchTerm) =>
       set({ searchTerm, selectedResult: undefined, scrollPosition: 0 }),
+    setUpdateAvailable: (updateAvailable) => set({ updateAvailable }),
   },
 }));
 

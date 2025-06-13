@@ -5,32 +5,33 @@ import { BunContext, BunRuntime } from "@effect/platform-bun";
 import { Effect } from "effect";
 import { render } from "ink";
 import { App } from "./app";
-import { checkForUpdate } from "./utils/check-update";
+import { UpdateService } from "./services/updater/service";
 import { VERSION } from "./version";
 
-try {
-  await checkForUpdate();
-} catch {
-  // ignore
-}
-
 const command = Command.make("gs", {}, () =>
-  Effect.acquireUseRelease(
-    Effect.sync(() => {
-      process.stdout.write("\x1b[?1049h"); // Enable alternative screen
-      process.stdout.write("\x1b[?25l"); // Hide cursor
+  Effect.gen(function* () {
+    const updateService = yield* UpdateService.UpdateService;
+    const isUpdateAvailable = yield* updateService
+      .checkForUpdate()
+      .pipe(Effect.catchAll(() => Effect.succeed(false)));
 
-      return render(<App />);
-    }),
-    (instance) => Effect.promise(() => instance.waitUntilExit()),
-    (instance) =>
+    yield* Effect.acquireUseRelease(
       Effect.sync(() => {
-        process.stdout.write("\x1b[?25h"); // Show cursor
-        process.stdout.write("\x1b[?1049l"); // Disable alternative screen
+        process.stdout.write("\x1b[?1049h"); // Enable alternative screen
+        process.stdout.write("\x1b[?25l"); // Hide cursor
 
-        instance.unmount();
+        return render(<App isUpdateAvailable={isUpdateAvailable} />);
       }),
-  ),
+      (instance) => Effect.promise(() => instance.waitUntilExit()),
+      (instance) =>
+        Effect.sync(() => {
+          process.stdout.write("\x1b[?25h"); // Show cursor
+          process.stdout.write("\x1b[?1049l"); // Disable alternative screen
+
+          instance.unmount();
+        }),
+    );
+  }),
 );
 
 const run = Command.run(command, {
@@ -41,5 +42,6 @@ const run = Command.run(command, {
 run(process.argv).pipe(
   Effect.provide(BunContext.layer),
   Effect.provide(CliConfig.layer({ showBuiltIns: false })),
+  Effect.provide(UpdateService.layer),
   BunRuntime.runMain({ disableErrorReporting: true }),
 );

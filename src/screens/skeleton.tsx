@@ -1,4 +1,4 @@
-import { Box, Text } from "ink";
+import { Box, type BoxProps, Text, type TextProps } from "ink";
 import { useMemo } from "react";
 import { FullScreen } from "../components/full-screen";
 import { SearchBox } from "../components/search-box";
@@ -8,6 +8,23 @@ import { useStore } from "../store";
 import { getCurrentTheme } from "../utils/theme";
 import { VERSION } from "../version";
 
+const UPDATE_AVAILABLE_TEXT = "UPDATE AVAILABLE";
+
+function BoundedText({
+  children,
+  wrapperProps,
+  ...props
+}: TextProps & {
+  wrapperProps?: BoxProps;
+  children: React.ReactNode;
+}) {
+  return (
+    <Box minWidth={UPDATE_AVAILABLE_TEXT.length} {...wrapperProps}>
+      <Text {...props}>{children}</Text>
+    </Box>
+  );
+}
+
 export function ApplicationSkeleton({
   children,
 }: {
@@ -15,6 +32,7 @@ export function ApplicationSkeleton({
 }) {
   const theme = getCurrentTheme();
   const selectedResult = useStore((state) => state.selectedResult);
+  const updateAvailable = useStore((state) => state.updateAvailable);
   const { hits, totalHits, isFetching, hasNextPage } = useGrepRequest();
 
   const currentIndex = useMemo(
@@ -36,8 +54,15 @@ export function ApplicationSkeleton({
         borderTop={false}
         justifyContent="space-between"
       >
-        <Text bold>greptui (grep.app)</Text>
-        <Text dimColor>v{VERSION}</Text>
+        <BoundedText bold>greptui (grep.app)</BoundedText>
+        {updateAvailable && (
+          <BoundedText bold color="green">
+            {UPDATE_AVAILABLE_TEXT}
+          </BoundedText>
+        )}
+        <BoundedText wrapperProps={{ justifyContent: "flex-end" }} dimColor>
+          v{VERSION}
+        </BoundedText>
       </Box>
 
       <Box flexDirection="column" gap={0}>

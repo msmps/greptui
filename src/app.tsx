@@ -1,5 +1,6 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Box, Text } from "ink";
+import { useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { ErrorOverlay } from "./components/error-overlay";
 import { FullScreen } from "./components/full-screen";
@@ -9,10 +10,17 @@ import { useTerminalSize } from "./hooks/use-terminal-size";
 import { InitialScreen } from "./screens/initial-screen";
 import { NoResultsScreen } from "./screens/no-results-screen";
 import { ResultsScreen } from "./screens/results-screen";
+import { useActions } from "./store";
 
 const queryClient = new QueryClient();
 
-export const App = () => {
+export const App = ({ isUpdateAvailable }: { isUpdateAvailable: boolean }) => {
+  const { setUpdateAvailable } = useActions();
+
+  useEffect(() => {
+    setUpdateAvailable(isUpdateAvailable);
+  }, [isUpdateAvailable, setUpdateAvailable]);
+
   return (
     <>
       <QueryClientProvider client={queryClient}>

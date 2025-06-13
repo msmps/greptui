@@ -20,7 +20,6 @@
     "@effect/platform-bun": "^0.69.14",
     "@parse5/tools": "^0.6.0",
     "@tanstack/react-query": "^5.80.7",
-    "boxen": "^8.0.1",
     "chalk": "^5.4.1",
     "cli-highlight": "^2.1.11",
     "effect": "^3.16.5",
