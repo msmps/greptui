@@ -26,7 +26,8 @@ $ greptui
 ## TODO
 
 - [ ] Add filters/facets
-- [ ] Migrate parser and update checker to effect services
+- [x] Migrate update checker to effect services
+- [ ] Migrate parser effect services
 - [ ] Improve error handling + handle errors (maybe move errors into data channel)
 - [ ] ...
 
