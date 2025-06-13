@@ -1,4 +1,4 @@
-import { useApp, useInput } from "ink";
+import { useApp, useInput, type Key } from "ink";
 import open from "open";
 import { useActions, useStore } from "../store";
 import { LAYOUT_CONSTANTS } from "../utils/config";
@@ -114,6 +114,28 @@ const useKeyboardHandlers = () => {
   };
 };
 
+const isUpMotion = (input: string, key: Key) => {
+  // Arrow key
+  if (key.upArrow) return true;
+
+  // Vim-style k navigation
+  if (input === "k") return true;
+
+  // Vim-style ctrl-p navigation
+  if (input === "p" && key.ctrl) return true;
+};
+
+const isDownMotion = (input: string, key: Key) => {
+  // Arrow key
+  if (key.downArrow) return true;
+
+  // Vim-style j navigation
+  if (input === "j") return true;
+
+  // Vim-style ctrl-n navigation
+  if (input === "n" && key.ctrl) return true;
+};
+
 export function useKeyboardNavigation() {
   const {
     handleQuitOnError,
@@ -133,8 +155,8 @@ export function useKeyboardNavigation() {
     // Handle enter actions
     if (key.return && handleEnterAction()) return;
 
-    // Handle arrow navigation
-    if (key.upArrow && handleUpArrow()) return;
-    if (key.downArrow && handleDownArrow()) return;
+    // Handle arrow/vim-style navigation
+    if (isUpMotion(input, key) && handleUpArrow()) return;
+    if (isDownMotion(input, key) && handleDownArrow()) return;
   });
 }
