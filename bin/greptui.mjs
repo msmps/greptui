@@ -7,6 +7,8 @@ const require = createRequire(import.meta.url);
 const name = `greptui-${process.platform}-${process.arch}`;
 const binary = process.platform === "win32" ? "greptui.exe" : "greptui";
 
+let resolved;
+
 try {
   resolved = require.resolve(path.join(name, "bin", binary));
 } catch (ex) {

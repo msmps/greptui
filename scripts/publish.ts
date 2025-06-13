@@ -1,5 +1,7 @@
 #!/usr/bin/env bun
 
+// shout out to https://x.com/thdxr for this script (sst/opencode)
+
 import { $ } from "bun";
 
 import pkg from "../package.json";
@@ -55,13 +57,16 @@ for (const [os, arch] of targets) {
 
 await $`mkdir -p ./dist/${pkg.name}`;
 await $`cp -r ./bin ./dist/${pkg.name}/bin`;
-
+await $`cp ./scripts/postinstall.js ./dist/${pkg.name}/postinstall.js`;
 await Bun.file(`./dist/${pkg.name}/package.json`).write(
   JSON.stringify(
     {
       name: pkg.name,
       bin: {
-        [pkg.name]: `./bin/${pkg.name}`,
+        [pkg.name]: `./bin/${pkg.name}.mjs`,
+      },
+      scripts: {
+        postinstall: "node ./postinstall.js",
       },
       version,
       optionalDependencies,
