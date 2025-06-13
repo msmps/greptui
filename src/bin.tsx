@@ -35,7 +35,7 @@ const command = Command.make("gs", {}, () =>
 );
 
 const run = Command.run(command, {
-  name: "gs",
+  name: "greptui",
   version: VERSION,
 });
 
