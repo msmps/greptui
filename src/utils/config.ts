@@ -23,3 +23,5 @@ export const SEARCH_CONFIG = {
   MAX_RESULTS_PER_PAGE: 50,
   ENABLE_SYNTAX_HIGHLIGHTING: true,
 } as const;
+
+export const GTUI_MARKER = "__GTUI_MARK__";

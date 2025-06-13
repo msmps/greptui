@@ -1,6 +1,6 @@
 import { type Element, getAttribute, query, queryAll } from "@parse5/tools";
-import chalk from "chalk";
 import { type DefaultTreeAdapterTypes, parse } from "parse5";
+import { GTUI_MARKER } from "./utils/config";
 
 export type ParsedRow = {
   lineNumber: number;
@@ -27,7 +27,7 @@ function getHighlightedCode(node: Node): string {
   if (isElementNode(node)) {
     const childrenText = node.childNodes.map(getHighlightedCode).join("");
     if (node.tagName === "mark") {
-      return chalk.bgHex("#cde7ff").black.bold(childrenText);
+      return `${GTUI_MARKER}${childrenText}${GTUI_MARKER}`;
     }
     return childrenText;
   }
