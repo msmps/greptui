@@ -136,5 +136,9 @@ export function useKeyboardNavigation() {
     // Handle arrow navigation
     if (key.upArrow && handleUpArrow()) return;
     if (key.downArrow && handleDownArrow()) return;
+
+    // Vim style navigation
+    if (input === "k" && handleUpArrow()) return;
+    if (input === "j" && handleDownArrow()) return;
   });
 }

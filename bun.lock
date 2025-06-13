@@ -35,6 +35,7 @@
     },
   },
   "trustedDependencies": [
+    "msgpackr-extract",
     "@biomejs/biome",
     "@parcel/watcher",
   ],
