@@ -5,6 +5,7 @@
 import { $ } from "bun";
 
 import pkg from "../package.json";
+const nextPkg = JSON.parse(JSON.stringify(pkg));
 
 const dry = process.argv.includes("--dry");
 const snapshot = process.argv.includes("--snapshot");
@@ -62,6 +63,9 @@ await Bun.file(`./dist/${pkg.name}/package.json`).write(
   JSON.stringify(
     {
       name: pkg.name,
+      description: nextPkg.description,
+      author: nextPkg.author,
+      type: "module",
       bin: {
         [pkg.name]: `./bin/${pkg.name}.mjs`,
       },

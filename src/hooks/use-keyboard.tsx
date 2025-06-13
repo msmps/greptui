@@ -1,4 +1,4 @@
-import { useApp, useInput, type Key } from "ink";
+import { type Key, useApp, useInput } from "ink";
 import open from "open";
 import { useActions, useStore } from "../store";
 import { LAYOUT_CONSTANTS } from "../utils/config";
