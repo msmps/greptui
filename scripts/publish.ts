@@ -38,7 +38,7 @@ for (const [os, arch] of targets) {
   console.log(`building ${os}-${arch}`);
   const name = `${pkg.name}-${os}-${arch}`;
   await $`mkdir -p dist/${name}/bin`;
-  await $`bun build --compile --minify --target=bun-${os}-${arch} --outfile=dist/${name}/bin/greptui ./src/bin.tsx`;
+  await $`bun build --define process.env.GREPTUI_VERSION="'${version}'" --compile --minify --target=bun-${os}-${arch} --outfile=dist/${name}/bin/greptui ./src/bin.tsx`;
   await Bun.file(`dist/${name}/package.json`).write(
     JSON.stringify(
       {
