@@ -3,6 +3,13 @@
 > [!NOTE]  
 > **Work in Progress** - This project is currently under active development.
 
+✨ A CLI / TUI for searching https://grep.app/
+<br /><br />
+<img src="https://badgen.net/npm/v/greptui" alt="NPM Version" />
+
+![greptui](https://github.com/user-attachments/assets/aa9f94af-2399-49b8-b50b-0b4ecb904784)
+
+
 ## Personal Software Era
 
 _Inspired by [Lee Robinson's thoughts on personal software](https://leerob.com/personal-software)_
